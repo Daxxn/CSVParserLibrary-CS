@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>CSV Parsing Library</Title>
+    <Authors>Daxxn</Authors>
+    <Company>Daxxn Industries</Company>
+    <Description>CSV File parsing library for C#.</Description>
+    <RepositoryUrl>https://github.com/Daxxn/CSVParserLibrary-CS.git</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
