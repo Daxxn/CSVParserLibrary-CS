@@ -126,6 +126,13 @@ namespace CSVParserLibrary
          return await Task.Run(() => ParseFile<T>(reader));
       }
 
+      /// <summary>
+      /// Parse the provided CSV stream and create a <see cref="CSVParseResult{T}"/>.
+      /// </summary>
+      /// <typeparam name="T">Model to create. Must be a class.</typeparam>
+      /// <param name="stream">Stream to read from.</param>
+      /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
+      /// <exception cref="Exception"></exception>
       public CSVParseResult<T> ParseFile<T>(Stream stream) where T : class, new()
       {
          var reader = new StreamReader(stream);
@@ -134,6 +141,16 @@ namespace CSVParserLibrary
          return ParseFile<T>(reader);
       }
 
+      /// <summary>
+      /// Parse the provided CSV file stream and create a <see cref="CSVParseResult{T}"/>.
+      /// </summary>
+      /// <typeparam name="T">Model to create. Must be a class.</typeparam>
+      /// <param name="stream">File stream to read from.</param>
+      /// <param name="options">Options to use instead of the defaults.</param>
+      /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
+      /// <exception cref="Exception"/>
+      /// <exception cref="CSVLineException"/>
+      /// <exception cref="AggregateException"/>
       public CSVParseResult<T> ParseFile<T>(StreamReader stream, ICSVParserOptions options) where T : class, new()
       {
          _options = options;

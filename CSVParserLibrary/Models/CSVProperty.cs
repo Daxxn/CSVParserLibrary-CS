@@ -1,5 +1,8 @@
 ﻿namespace CSVParserLibrary.Models;
 
+/// <summary>
+/// Assign a property to a column in the CSV file.
+/// </summary>
 [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 public sealed class CSVProperty : Attribute
 {
@@ -15,5 +18,8 @@ public sealed class CSVProperty : Attribute
 
    public override string ToString() => $"CSVProperty {PropertyString}";
 
-    public string PropertyString => _propertyString;
+   /// <summary>
+   /// Property to match in the CSV file.
+   /// </summary>
+   public string PropertyString => _propertyString;
 }

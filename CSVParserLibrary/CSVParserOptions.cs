@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CSVParserLibrary;
 
+/// <summary>
+/// Options to change how the <see cref="ICSVParser"/> handles parsing CSV files.
+/// </summary>
 public class CSVParserOptions : ICSVParserOptions
 {
    /// <summary>

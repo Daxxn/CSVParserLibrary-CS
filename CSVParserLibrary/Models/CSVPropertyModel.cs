@@ -2,7 +2,7 @@
 
 namespace CSVParserLibrary.Models
 {
-   public class CSVPropertyModel
+   internal class CSVPropertyModel
    {
       public int Index { get; set; }
       public PropertyInfo Property { get; set; } = null!;

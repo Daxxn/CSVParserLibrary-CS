@@ -2,7 +2,7 @@
 
 namespace CSVParserLibrary.Models;
 
-public class CSVPropertyCollection : IEnumerable<CSVPropertyModel>
+internal class CSVPropertyCollection : IEnumerable<CSVPropertyModel>
 {
    #region Local Props
    private readonly List<CSVPropertyModel> _items = new();
@@ -25,8 +25,8 @@ public class CSVPropertyCollection : IEnumerable<CSVPropertyModel>
    #endregion
 
    #region Methods
-   public bool Contains(CSVPropertyModel item) => throw new NotImplementedException();
-   public int IndexOf(CSVPropertyModel item) => throw new NotImplementedException();
+   public bool Contains(CSVPropertyModel item) => _items.Contains(item);
+   public int IndexOf(CSVPropertyModel item) => _items.IndexOf(item);
    public IEnumerator<CSVPropertyModel> GetEnumerator() => _items.GetEnumerator();
    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
    #endregion

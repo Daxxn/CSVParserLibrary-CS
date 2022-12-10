@@ -14,7 +14,15 @@ public static class CSVParserStatic
    #region Methods
 
    #region Change Options Methods
+   /// <summary>
+   /// Replace current options.
+   /// </summary>
+   /// <param name="options">New options.</param>
    public static void UpdateOptions(ICSVParserOptions options) => Options = options;
+
+   /// <summary>
+   /// Reset all options to defaults.
+   /// </summary>
    public static void ResetOptions() => Options = new CSVParserOptions();
    #endregion
 
@@ -57,6 +65,12 @@ public static class CSVParserStatic
    /// </summary>
    public static void ClearExclusionFunctions() => Options.ExclusionFunctions.Clear();
 
+   /// <summary>
+   /// Parse multiple files in parallel.
+   /// </summary>
+   /// <typeparam name="T">Model to create from each line in the file.</typeparam>
+   /// <param name="filePaths"><see cref="Array"/> of files to parse.</param>
+   /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
    public static IEnumerable<CSVParseResult<T>> ParseFilesParallel<T>(string[] filePaths, ICSVParserOptions options) where T : class, new()
    {
       Options = options;
@@ -101,6 +115,13 @@ public static class CSVParserStatic
      await Task.Run(() => ParseFile<T>(filePath));
    #endregion
 
+   /// <summary>
+   /// Parse the provided CSV stream and create a <see cref="CSVParseResult{T}"/>.
+   /// </summary>
+   /// <typeparam name="T">Model to create. Must be a class.</typeparam>
+   /// <param name="stream">Stream to read from.</param>
+   /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
+   /// <exception cref="Exception"></exception>
    public static async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream) where T : class, new()
    {
       var reader = new StreamReader(stream);
@@ -109,6 +130,13 @@ public static class CSVParserStatic
       return await Task.Run(() => ParseFile<T>(reader));
    }
 
+   /// <summary>
+   /// Parse the provided CSV stream and create a <see cref="CSVParseResult{T}"/>.
+   /// </summary>
+   /// <typeparam name="T">Model to create. Must be a class.</typeparam>
+   /// <param name="stream">Stream to read from.</param>
+   /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
+   /// <exception cref="Exception"></exception>
    public static CSVParseResult<T> ParseFile<T>(Stream stream) where T : class, new()
    {
       var reader = new StreamReader(stream);
@@ -117,6 +145,16 @@ public static class CSVParserStatic
       return ParseFile<T>(reader);
    }
 
+   /// <summary>
+   /// Parse the provided CSV file stream and create a <see cref="CSVParseResult{T}"/>.
+   /// </summary>
+   /// <typeparam name="T">Model to create. Must be a class.</typeparam>
+   /// <param name="stream">File stream to read from.</param>
+   /// <param name="options">Options to use instead of the defaults.</param>
+   /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
+   /// <exception cref="Exception"/>
+   /// <exception cref="CSVLineException"/>
+   /// <exception cref="AggregateException"/>
    public static CSVParseResult<T> ParseFile<T>(StreamReader stream, ICSVParserOptions options) where T : class, new()
    {
       Options = options;
