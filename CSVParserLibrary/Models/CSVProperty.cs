@@ -3,7 +3,7 @@
 /// <summary>
 /// Assign a property to a column in the CSV file.
 /// </summary>
-[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
 public sealed class CSVProperty : Attribute
 {
    readonly string _propertyString;
