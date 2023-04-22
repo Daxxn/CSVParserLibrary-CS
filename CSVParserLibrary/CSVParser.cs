@@ -308,6 +308,13 @@ namespace CSVParserLibrary
                return i;
             }
          }
+         else if (type.Name == "UInt32")
+         {
+            if (uint.TryParse(data.Replace(",", ""), out uint i))
+            {
+               return i;
+            }
+         }
          else if (type.Name == "Double")
          {
             if (double.TryParse(data, out double d))
