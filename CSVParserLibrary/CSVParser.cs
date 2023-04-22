@@ -280,7 +280,7 @@ namespace CSVParserLibrary
          var modelProps = new T().GetType().GetProperties();
          for (int i = 0; i < propStrings.Length; i++)
          {
-            var foundProp = modelProps.FirstOrDefault(p => p.GetCustomAttribute<CSVProperty>()?.CompareProperty(propStrings[i], _options.IgnoreCase) == true);
+            var foundProp = modelProps.FirstOrDefault(p => p.GetCustomAttributes<CSVProperty>().FirstOrDefault(c => c.CompareProperty(propStrings[i], _options.IgnoreCase)) != null);
             if (foundProp != null)
             {
                output.Add(new(i, foundProp, propStrings[i]));
