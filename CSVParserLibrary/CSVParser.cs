@@ -112,18 +112,18 @@ namespace CSVParserLibrary
       public async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream) where T : class, new()
       {
          var reader = new StreamReader(stream);
-         if (reader is null)
-            throw new Exception("Unable to convert stream to a reader stream.");
-         return await Task.Run(() => ParseFile<T>(reader));
+         return reader is null
+            ? throw new Exception("Unable to convert stream to a reader stream.")
+            : await Task.Run(() => ParseFile<T>(reader));
       }
 
       public async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream, ICSVParserOptions options) where T : class, new()
       {
          _options = options;
          var reader = new StreamReader(stream);
-         if (reader is null)
-            throw new Exception("Unable to convert stream to a reader stream.");
-         return await Task.Run(() => ParseFile<T>(reader));
+         return reader is null
+            ? throw new Exception("Unable to convert stream to a reader stream.")
+            : await Task.Run(() => ParseFile<T>(reader));
       }
 
       /// <summary>
@@ -136,9 +136,9 @@ namespace CSVParserLibrary
       public CSVParseResult<T> ParseFile<T>(Stream stream) where T : class, new()
       {
          var reader = new StreamReader(stream);
-         if (reader is null)
-            throw new Exception("Unable to convert stream to a reader stream.");
-         return ParseFile<T>(reader);
+         return reader is null
+            ? throw new Exception("Unable to convert stream to a reader stream.")
+            : ParseFile<T>(reader);
       }
 
       /// <summary>
@@ -268,7 +268,9 @@ namespace CSVParserLibrary
       }
 
       /// <summary>
-      /// Parse property line and match each property to the corresponding <see cref="CSVProperty"/> attribute.
+      /// Parse property line and match each property to the corresponding property name OR <see cref="CSVProperty"/> attribute.
+      /// <para/>
+      /// <b>Property Name</b> takes priority.
       /// </summary>
       /// <typeparam name="T">Model to check for properties.</typeparam>
       /// <param name="firstLine">property line to parse.</param>
@@ -280,7 +282,12 @@ namespace CSVParserLibrary
          var modelProps = new T().GetType().GetProperties();
          for (int i = 0; i < propStrings.Length; i++)
          {
-            var foundProp = modelProps.FirstOrDefault(p => p.GetCustomAttributes<CSVProperty>().FirstOrDefault(c => c.CompareProperty(propStrings[i], _options.IgnoreCase)) != null);
+            var foundProp = modelProps.FirstOrDefault(
+               p => p.Name == propStrings[i]
+                  || p.GetCustomAttributes<CSVProperty>().FirstOrDefault(
+                     c => c.CompareProperty(propStrings[i], _options.IgnoreCase))
+                        != null);
+
             if (foundProp != null)
             {
                output.Add(new(i, foundProp, propStrings[i]));
