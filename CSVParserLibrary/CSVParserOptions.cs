@@ -20,10 +20,7 @@ public class CSVParserOptions : ICSVParserOptions
    {
       "\",\""
    };
-   /// <summary>
-   /// Ignore upper case letters while parsing properties.
-   /// </summary>
-   public bool IgnoreCase { get; set; } = false;
+
    /// <summary>
    /// If a line fails to parse, add it to the errors list and continue.
    /// </summary>

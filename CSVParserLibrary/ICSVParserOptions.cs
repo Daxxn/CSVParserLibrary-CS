@@ -11,10 +11,7 @@
       /// default - <c>","</c>
       /// </summary>
       string[] Delimiters { get; set; }
-      /// <summary>
-      /// Ignore all letter casing while parsing props.
-      /// </summary>
-      bool IgnoreCase { get; set; }
+
       /// <summary>
       /// Ignores all errors while parsing file.
       /// <para/>
@@ -23,6 +20,7 @@
       /// False - Will throw an exception immediately when an error occurs.
       /// </summary>
       bool IgnoreLineParseErrors { get; set; }
+
       /// <summary>
       /// Extra functions while parsing lines.
       /// <para/>
@@ -39,6 +37,7 @@
       /// </list>
       /// </summary>
       Dictionary<string, Func<string[], bool>> ExclusionFunctions { get; set; }
+
       /// <summary>
       /// Custom end of file marker string.
       /// </summary>

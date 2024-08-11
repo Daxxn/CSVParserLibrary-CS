@@ -124,9 +124,7 @@ public static class CSVParserStatic
    /// <exception cref="Exception"></exception>
    public static async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream) where T : class, new()
    {
-      var reader = new StreamReader(stream);
-      if (reader is null)
-         throw new Exception("Unable to convert stream to a reader stream.");
+      var reader = new StreamReader(stream) ?? throw new Exception("Unable to convert stream to a reader stream.");
       return await Task.Run(() => ParseFile<T>(reader));
    }
 
@@ -139,9 +137,7 @@ public static class CSVParserStatic
    /// <exception cref="Exception"></exception>
    public static CSVParseResult<T> ParseFile<T>(Stream stream) where T : class, new()
    {
-      var reader = new StreamReader(stream);
-      if (reader is null)
-         throw new Exception("Unable to convert stream to a reader stream.");
+      var reader = new StreamReader(stream) ?? throw new Exception("Unable to convert stream to a reader stream.");
       return ParseFile<T>(reader);
    }
 
@@ -272,7 +268,7 @@ public static class CSVParserStatic
    }
 
    /// <summary>
-   /// Parse property line and match each property to the corresponding <see cref="CSVProperty"/> attribute.
+   /// Parse property line and match each property to the corresponding <see cref="CSVPropertyAttribute"/> attribute.
    /// </summary>
    /// <typeparam name="T">Model to check for properties.</typeparam>
    /// <param name="firstLine">property line to parse.</param>
@@ -284,7 +280,7 @@ public static class CSVParserStatic
       var modelProps = new T().GetType().GetProperties();
       for (int i = 0; i < propStrings.Length; i++)
       {
-         var foundProp = modelProps.FirstOrDefault(p => p.GetCustomAttribute<CSVProperty>()?.CompareProperty(propStrings[i], Options.IgnoreCase) == true);
+         var foundProp = modelProps.FirstOrDefault(p => p.GetCustomAttribute<CSVPropertyAttribute>()?.CompareProperty(propStrings[i]) == true);
          if (foundProp != null)
          {
             output.Add(new(i, foundProp, propStrings[i]));

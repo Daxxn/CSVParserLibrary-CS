@@ -268,7 +268,7 @@ namespace CSVParserLibrary
       }
 
       /// <summary>
-      /// Parse property line and match each property to the corresponding property name OR <see cref="CSVProperty"/> attribute.
+      /// Parse property line and match each property to the corresponding property name OR <see cref="CSVPropertyAttribute"/> attribute.
       /// <para/>
       /// <b>Property Name</b> takes priority.
       /// </summary>
@@ -284,8 +284,8 @@ namespace CSVParserLibrary
          {
             var foundProp = modelProps.FirstOrDefault(
                p => p.Name == propStrings[i]
-                  || p.GetCustomAttributes<CSVProperty>().FirstOrDefault(
-                     c => c.CompareProperty(propStrings[i], _options.IgnoreCase))
+                  || p.GetCustomAttributes<CSVPropertyAttribute>().FirstOrDefault(
+                     c => c.CompareProperty(propStrings[i]))
                         != null);
 
             if (foundProp != null)

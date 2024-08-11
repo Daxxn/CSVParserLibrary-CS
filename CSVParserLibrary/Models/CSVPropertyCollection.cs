@@ -6,21 +6,20 @@ internal class CSVPropertyCollection : IEnumerable<CSVPropertyModel>
 {
    #region Local Props
    private readonly List<CSVPropertyModel> _items = new();
-   private readonly int _highestIndex;
-   private readonly int _totalPropCount;
+
    public CSVPropertyModel this[int index] { get => _items[index]; set => _items[index] = value; }
    public int Count => _items.Count;
    public bool IsReadOnly { get; } = false;
-   public int HighestPropertyIndex => _highestIndex;
-   public int TotalPropertyCount => _totalPropCount;
+   public int HighestPropertyIndex { get; init; }
+   public int TotalPropertyCount { get; init; }
    #endregion
 
    #region Constructors
    public CSVPropertyCollection(IEnumerable<CSVPropertyModel> properties, int totalPropCount)
    {
       _items = properties.ToList();
-      _highestIndex = _items.Max(i => i.Index);
-      _totalPropCount = totalPropCount;
+      HighestPropertyIndex = _items.Max(i => i.Index);
+      TotalPropertyCount = totalPropCount;
    }
    #endregion
 
