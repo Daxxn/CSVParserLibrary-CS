@@ -217,7 +217,8 @@ namespace CSVParserLibrary
             {
                var line = reader.ReadLine() ?? "";
                lineCount++;
-               var propData = ParseLine(line);
+               //var propData = ParseLine(line);
+               var propData = ParseLineNew(line);
                if (_options.ExclusionFunctions.Values.Any(func => func(propData)))
                { continue; }
                if (_options.EndOfFileMarker != null)
@@ -267,6 +268,43 @@ namespace CSVParserLibrary
          return split;
       }
 
+      private string[] ParseLineNew(string line)
+      {
+         List<string> output = new();
+         StringBuilder sb = new();
+         bool ignoreDelimiter = false;
+         foreach (var ch in line)
+         {
+            if (_options.IgnoreDelimiters.Contains(ch))
+            {
+               ignoreDelimiter = !ignoreDelimiter;
+               continue;
+            }
+            else if (!ignoreDelimiter && _options.Delimiters.Contains(ch))
+            {
+               if (sb.Length > 0)
+               {
+                  output.Add(sb.ToString());
+                  sb.Clear();
+               }
+               else
+               {
+                  output.Add("");
+               }
+            }
+            else
+            {
+               sb.Append(ch);
+            }
+         }
+         if (sb.Length > 0)
+         {
+            output.Add(sb.ToString());
+         }
+
+         return output.ToArray();
+      }
+
       /// <summary>
       /// Parse property line and match each property to the corresponding property name OR <see cref="CSVPropertyAttribute"/> attribute.
       /// <para/>
@@ -277,7 +315,8 @@ namespace CSVParserLibrary
       /// <returns></returns>
       private CSVPropertyCollection BuildProperties<T>(string firstLine) where T : class, new()
       {
-         string[] propStrings = ParseLine(firstLine);
+         //string[] propStrings = ParseLine(firstLine);
+         string[] propStrings = ParseLineNew(firstLine);
          var output = new List<CSVPropertyModel>();
          var modelProps = new T().GetType().GetProperties();
          for (int i = 0; i < propStrings.Length; i++)

@@ -6,18 +6,26 @@
    public interface ICSVParserOptions
    {
       /// <summary>
-      /// Delimiters used to parse props.
+      /// List of characters that divide the string into the values for each line.
       /// <para/>
-      /// default - <c>","</c>
+      /// default = <c>,</c>
       /// </summary>
-      string[] Delimiters { get; set; }
+      char[] Delimiters { get; set; }
+
+      /// <summary>
+      /// A list of characters that bypass the delimiters when parsing lines. These are needed when the data contains characters used as the <see cref="Delimiters"/>
+      /// <para>These are usually double quotes <c>"</c></para>
+      /// <para/>
+      /// default = <c>"</c>
+      /// </summary>
+      char[] IgnoreDelimiters { get; set; }
 
       /// <summary>
       /// Ignores all errors while parsing file.
       /// <para/>
-      /// True - Will continue to parse file and add errors to the output.
+      /// True = Will continue to parse file and add all errors will be in the <see cref="Models.CSVParseResult{T}"/>.
       /// <para/>
-      /// False - Will throw an exception immediately when an error occurs.
+      /// False = Will throw an exception immediately when an error occurs.
       /// </summary>
       bool IgnoreLineParseErrors { get; set; }
 
@@ -32,7 +40,7 @@
       ///   </item>
       ///   <item>
       ///      <term>Return : <see cref="bool"/></term>
-      ///      <description><see langword="true"/> to exclude the current line from further parsing.</description>
+      ///      <description>Return <see langword="true"/> to exclude this line.</description>
       ///   </item>
       /// </list>
       /// </summary>

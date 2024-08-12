@@ -12,13 +12,24 @@ namespace CSVParserLibrary;
 public class CSVParserOptions : ICSVParserOptions
 {
    /// <summary>
-   /// Delimiters to use while separating each property.
+   /// List of characters that divide the string into the values for each line.
    /// <para/>
-   /// Default: { "," }
+   /// default = <c>,</c>
    /// </summary>
-   public string[] Delimiters { get; set; } = new[]
+   public char[] Delimiters { get; set; } = new[]
    {
-      "\",\""
+      ',',
+   };
+
+   /// <summary>
+   /// A list of characters that bypass the delimiters when parsing lines. These are needed when the data contains characters used as the <see cref="Delimiters"/>
+   /// <para>These are usually double quotes <c>"</c></para>
+   /// <para/>
+   /// default = <c>"</c>
+   /// </summary>
+   public char[] IgnoreDelimiters { get; set; } = new[]
+   {
+      '"'
    };
 
    /// <summary>
