@@ -11,6 +11,7 @@
     <Company>Daxxn Industries</Company>
     <Description>CSV File parsing library for C#.</Description>
     <RepositoryUrl>https://github.com/Daxxn/CSVParserLibrary-CS.git</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
 </Project>
