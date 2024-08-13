@@ -17,6 +17,7 @@ namespace CSVParserLibrary
       #endregion
 
       #region Constructors
+      public CSVParser() { _options = new CSVParserOptions(); }
       public CSVParser(ICSVParserOptions options) => _options = options;
       #endregion
 

@@ -15,7 +15,7 @@ public class CSVParseResult<T> : IReadOnlyList<T>
    /// Only used when <see cref="ICSVParserOptions.IgnoreLineParseErrors"/> is set to <see langword="true"/>.
    /// </summary>
    public IEnumerable<Exception>? Errors { get; init; }
-   public int Count { get; }
+   public int Count => Values.Count;
 
    public T this[int index] { get => Values.ElementAt(index); }
 
