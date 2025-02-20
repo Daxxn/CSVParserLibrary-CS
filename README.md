@@ -22,7 +22,7 @@ static void Main(string[] args)
 	};
 	
 	// Create the parser:
-    CSVParser parser = new CSVParser(options);
+	CSVParser parser = new CSVParser(options);
 
 	var results = parser.ParseFile<LineModel>(@"Path\To\The\File.csv");
 
