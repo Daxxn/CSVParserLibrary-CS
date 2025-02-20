@@ -21,6 +21,13 @@
       char[] IgnoreDelimiters { get; set; }
 
       /// <summary>
+      /// Needed when quotes ( <c>"</c> ) are used as delimiters but there are fields that contain quotes.
+      /// <para/>
+      /// Default = <c>\</c>
+      /// </summary>
+      public char QuoteDelimiter { get; set; }
+
+      /// <summary>
       /// Ignores all errors while parsing file.
       /// <para/>
       /// True = Will continue to parse file and add all errors will be in the <see cref="Models.CSVParseResult{T}"/>.

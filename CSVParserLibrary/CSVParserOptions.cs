@@ -33,6 +33,13 @@ public class CSVParserOptions : ICSVParserOptions
    };
 
    /// <summary>
+   /// Needed when quotes ( <c>"</c> ) are used as delimiters but there are fields that contain quotes.
+   /// <para/>
+   /// Default = <c>\</c>
+   /// </summary>
+   public char QuoteDelimiter { get; set; } = '\\';
+
+   /// <summary>
    /// If a line fails to parse, add it to the errors list and continue.
    /// </summary>
    public bool IgnoreLineParseErrors { get; set; } = false;

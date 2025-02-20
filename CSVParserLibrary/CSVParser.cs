@@ -274,11 +274,26 @@ namespace CSVParserLibrary
          List<string> output = new();
          StringBuilder sb = new();
          bool ignoreDelimiter = false;
+         char prevChar = '\0';
          foreach (var ch in line)
          {
             if (_options.IgnoreDelimiters.Contains(ch))
             {
-               ignoreDelimiter = !ignoreDelimiter;
+               if (prevChar != _options.QuoteDelimiter)
+               {
+                  ignoreDelimiter = !ignoreDelimiter;
+               }
+               else
+               {
+                  sb.Append(ch);
+               }
+               if (!ignoreDelimiter)
+               {
+                  if (sb.Length == 0)
+                  {
+                     output.Add("");
+                  }
+               }
                continue;
             }
             else if (!ignoreDelimiter && _options.Delimiters.Contains(ch))
@@ -290,13 +305,14 @@ namespace CSVParserLibrary
                }
                else
                {
-                  output.Add("");
+                  //output.Add("");
                }
             }
             else
             {
                sb.Append(ch);
             }
+            prevChar = ch;
          }
          if (sb.Length > 0)
          {
@@ -328,7 +344,8 @@ namespace CSVParserLibrary
                      c => c.CompareProperty(propStrings[i]))
                         != null);
 
-            if (foundProp != null)
+
+            if (foundProp != null && foundProp.GetCustomAttribute<CSVIgnoreAttribute>() is null)
             {
                output.Add(new(i, foundProp, propStrings[i]));
             }
@@ -381,6 +398,14 @@ namespace CSVParserLibrary
             if (type.GetConstructor(new[] { typeof(string) }) is ConstructorInfo ctr)
             {
                return ctr.Invoke(new[] { data });
+            }
+         }
+         else if (type.Name == "Nullable`1")
+         {
+            if (type.GenericTypeArguments.Length == 1)
+            {
+               if (string.IsNullOrEmpty(data)) return null;
+               return ParseType(data, type.GenericTypeArguments[0]);
             }
          }
          return null;
