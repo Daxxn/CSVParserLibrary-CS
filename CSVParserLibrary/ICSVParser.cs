@@ -75,7 +75,7 @@ namespace CSVParserLibrary
       /// Open and parse the provided CSV file and create a <see cref="CSVParseResult{T}"/>.
       /// </summary>
       /// <typeparam name="T">Model to create. Must be a class.</typeparam>
-      /// <param name="filePath">file path to open.</param>
+      /// <param name="stream">Stream to read from.</param>
       /// <param name="options">Options to use instead of the defaults.</param>
       /// <returns><see cref="CSVParseResult{T}"/> with all data and line errors.</returns>
       Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream, ICSVParserOptions options) where T : class, new();
@@ -102,6 +102,7 @@ namespace CSVParserLibrary
       /// </summary>
       /// <typeparam name="T">Model to create from each line in the file.</typeparam>
       /// <param name="filePaths"><see cref="Array"/> of files to parse.</param>
+      /// <param name="options">Change the options used during parsing.</param>
       /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
       IEnumerable<CSVParseResult<T>> ParseFilesParallel<T>(string[] filePaths, ICSVParserOptions options) where T : class, new();
 

@@ -10,6 +10,9 @@ using CSVParserLibrary.Models;
 
 namespace CSVParserLibrary
 {
+   /// <summary>
+   /// The object used to parse CSV file.
+   /// </summary>
    public class CSVParser : ICSVParser
    {
       #region Local Props
@@ -17,14 +20,28 @@ namespace CSVParserLibrary
       #endregion
 
       #region Constructors
+      /// <summary>
+      /// Create a CSV file parser object with the default options.
+      /// </summary>
       public CSVParser() { _options = new CSVParserOptions(); }
+      /// <summary>
+      /// Create a CSV file parser object with custom parser options.
+      /// </summary>
+      /// <param name="options">The custom option to use when parsing CSV files.</param>
       public CSVParser(ICSVParserOptions options) => _options = options;
       #endregion
 
       #region Methods
 
       #region Setup Methods
+      /// <summary>
+      /// Change the current parser option.
+      /// </summary>
+      /// <param name="options">The new parser option to use.</param>
       public void UpdateOptions(ICSVParserOptions options) => _options = options;
+      /// <summary>
+      /// Reset the parser options.
+      /// </summary>
       public void ResetOptions() => _options = new CSVParserOptions();
       /// <summary>
       /// Add a new exclusion function to the parsing chain.
@@ -66,6 +83,13 @@ namespace CSVParserLibrary
       #endregion
 
       #region Async Methods
+      /// <summary>
+      /// Parse multiple CSV files in parallel.
+      /// </summary>
+      /// <typeparam name="T">Model to create from each line in the file.</typeparam>
+      /// <param name="filePaths">The <see cref="Array"/> of CSV files to parse.</param>
+      /// <param name="options">The options to use when parsing each file.</param>
+      /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
       public IEnumerable<CSVParseResult<T>> ParseFilesParallel<T>(string[] filePaths, ICSVParserOptions options) where T : class, new()
       {
          _options = options;
@@ -75,10 +99,10 @@ namespace CSVParserLibrary
       }
 
       /// <summary>
-      /// Parse multiple files in parallel.
+      /// Parse multiple CSV files in parallel.
       /// </summary>
       /// <typeparam name="T">Model to create from each line in the file.</typeparam>
-      /// <param name="filePaths"><see cref="Array"/> of files to parse.</param>
+      /// <param name="filePaths">The <see cref="Array"/> of CSV files to parse.</param>
       /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
       public IEnumerable<CSVParseResult<T>> ParseFilesParallel<T>(string[] filePaths) where T : class, new()
       {
@@ -101,7 +125,7 @@ namespace CSVParserLibrary
       }
 
       /// <summary>
-      /// Parse CSV file asyncronously.
+      /// Parse a CSV file asyncronously.
       /// </summary>
       /// <typeparam name="T">Model to create from each line in the file.</typeparam>
       /// <param name="filePath">File to parse.</param>
@@ -110,6 +134,13 @@ namespace CSVParserLibrary
         await Task.Run(() => ParseFile<T>(filePath));
       #endregion
 
+      /// <summary>
+      /// Parse a CSV file asyncronously.
+      /// </summary>
+      /// <typeparam name="T">Model to create from each line in the file.</typeparam>
+      /// <param name="stream">The <see cref="Stream"/> from the file system.</param>
+      /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
+      /// <exception cref="Exception">Thrown when a stream cannot be converted to a <see cref="StreamReader"/>.</exception>
       public async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream) where T : class, new()
       {
          var reader = new StreamReader(stream);
@@ -118,6 +149,14 @@ namespace CSVParserLibrary
             : await Task.Run(() => ParseFile<T>(reader));
       }
 
+      /// <summary>
+      /// Parse a CSV file asyncronously.
+      /// </summary>
+      /// <typeparam name="T">Model to create from each line in the file.</typeparam>
+      /// <param name="stream">The <see cref="Stream"/> from the file system.</param>
+      /// <param name="options">Change the options used during parsing.</param>
+      /// <returns><see cref="CSVParseResult{T}"/> with all data and errors from parsing.</returns>
+      /// <exception cref="Exception">Thrown when a stream cannot be converted to a <see cref="StreamReader"/>.</exception>
       public async Task<CSVParseResult<T>> ParseFileAsync<T>(Stream stream, ICSVParserOptions options) where T : class, new()
       {
          _options = options;
@@ -249,26 +288,6 @@ namespace CSVParserLibrary
       }
 
       #region Utility Methods
-      /// <summary>
-      /// Split the line and remove excess characters.
-      /// </summary>
-      /// <param name="propsLine">Line to parse.</param>
-      /// <returns><see cref="Array"/> of cleaned <seealso cref="string"/></returns>
-      /// <exception cref="ArgumentNullException"/>
-      private string[] ParseLine(string propsLine)
-      {
-         if (string.IsNullOrEmpty(propsLine))
-            throw new ArgumentNullException(nameof(propsLine));
-         var split = propsLine.Split(_options.Delimiters, StringSplitOptions.None);
-
-         for (int i = 0; i < split.Length; i++)
-         {
-            split[i] = split[i].Trim().Trim('"');
-         }
-
-         return split;
-      }
-
       private string[] ParseLineNew(string line)
       {
          List<string> output = new();
@@ -302,10 +321,6 @@ namespace CSVParserLibrary
                {
                   output.Add(sb.ToString());
                   sb.Clear();
-               }
-               else
-               {
-                  //output.Add("");
                }
             }
             else
@@ -343,7 +358,6 @@ namespace CSVParserLibrary
                   || p.GetCustomAttributes<CSVPropertyAttribute>().FirstOrDefault(
                      c => c.CompareProperty(propStrings[i]))
                         != null);
-
 
             if (foundProp != null && foundProp.GetCustomAttribute<CSVIgnoreAttribute>() is null)
             {
@@ -404,8 +418,7 @@ namespace CSVParserLibrary
          {
             if (type.GenericTypeArguments.Length == 1)
             {
-               if (string.IsNullOrEmpty(data)) return null;
-               return ParseType(data, type.GenericTypeArguments[0]);
+               return string.IsNullOrEmpty(data) ? null : ParseType(data, type.GenericTypeArguments[0]);
             }
          }
          return null;
