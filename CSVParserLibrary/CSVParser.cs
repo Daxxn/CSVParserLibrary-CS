@@ -257,7 +257,7 @@ namespace CSVParserLibrary
             {
                var line = reader.ReadLine() ?? "";
                lineCount++;
-               //var propData = ParseLine(line);
+               if (string.IsNullOrEmpty(line)) continue;
                var propData = ParseLineNew(line);
                if (_options.ExclusionFunctions.Values.Any(func => func(propData)))
                { continue; }
