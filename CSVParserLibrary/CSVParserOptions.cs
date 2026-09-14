@@ -11,47 +11,52 @@ namespace CSVParserLibrary;
 /// </summary>
 public class CSVParserOptions : ICSVParserOptions
 {
-   /// <summary>
-   /// List of characters that divide the string into the values for each line.
-   /// <para/>
-   /// default = <c>,</c>
-   /// </summary>
-   public char[] Delimiters { get; set; } = new[]
-   {
-      ',',
-   };
+  /// <summary>
+  /// List of characters that divide the string into the values for each line.
+  /// <para/>
+  /// default = <c>,</c>
+  /// </summary>
+  public char[] Delimiters { get; set; } = new[]
+  {
+    ',',
+  };
 
-   /// <summary>
-   /// A list of characters that bypass the delimiters when parsing lines. These are needed when the data contains characters used as the <see cref="Delimiters"/>
-   /// <para>These are usually double quotes <c>"</c></para>
-   /// <para/>
-   /// default = <c>"</c>
-   /// </summary>
-   public char[] IgnoreDelimiters { get; set; } = new[]
-   {
-      '"'
-   };
+  /// <summary>
+  /// A list of characters that bypass the delimiters when parsing lines. These are needed when the data contains characters used as the <see cref="Delimiters"/>
+  /// <para>These are usually double quotes <c>"</c></para>
+  /// <para/>
+  /// default = <c>"</c>
+  /// </summary>
+  public char[] IgnoreDelimiters { get; set; } = new[]
+  {
+    '"'
+  };
 
-   /// <summary>
-   /// Needed when quotes ( <c>"</c> ) are used as delimiters but there are fields that contain quotes.
-   /// <para/>
-   /// Default = <c>\</c>
-   /// </summary>
-   public char QuoteDelimiter { get; set; } = '\\';
+  /// <summary>
+  /// Needed when quotes ( <c>"</c> ) are used as delimiters but there are fields that contain quotes.
+  /// <para/>
+  /// Default = <c>\</c>
+  /// </summary>
+  public char QuoteDelimiter { get; set; } = '\\';
 
-   /// <summary>
-   /// If a line fails to parse, add it to the errors list and continue.
-   /// </summary>
-   public bool IgnoreLineParseErrors { get; set; } = false;
+  /// <summary>
+  /// If a line fails to parse, add it to the errors list and continue.
+  /// </summary>
+  public bool IgnoreLineParseErrors { get; set; } = false;
 
-   /// <summary>
-   /// Extra functions that check the incoming csv line for errors or unwanted data.
-   /// </summary>
-   public Dictionary<string, Func<string[], bool>> ExclusionFunctions { get; set; } = new();
+  /// <summary>
+  /// Extra functions that check the incoming csv line for errors or unwanted data.
+  /// </summary>
+  public Dictionary<string, Func<string[], bool>> ExclusionFunctions { get; set; } = new();
 
-   /// <summary>
-   /// Used with CSV files that have other data stored at the end of the file.
-   /// <para>For example: BOMs.</para>
-   /// </summary>
-   public string? EndOfFileMarker { get; set; }
+  /// <summary>
+  /// Used with CSV files that have other data stored at the end of the file.
+  /// <para>For example: BOMs.</para>
+  /// </summary>
+  public string? EndOfFileMarker { get; set; }
+
+  public char[]? DiscardCharacters { get; set; }
+
+  public bool TrimEnable { get; set; }
+  public char[]? TrimCharacters { get; set; } = { '"', ' ' };
 }
